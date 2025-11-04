@@ -1,0 +1,7 @@
+numpy>=1.24
+matplotlib>=3.7
+pytest>=7.4
+scipy>=1.11      # For advanced linear algebra (e.g., SVD, LU decomposition)
+seaborn>=0.12    # For prettier matrix plots
+jupyterlab       # If you want to run it interactively in notebooks
+ipywidgets
