@@ -3,7 +3,7 @@ name = "matrix-viz"
 version = "0.1.0"
 description = "Matrix operations and visualization with pytest"
 authors = [
-    { name = "Your Name", email = "your.email@example.com" }
+    { name = "Akai Kaede", email = "it.scope@gmail.com" }
 ]
 dependencies = [
     "numpy>=1.24",
