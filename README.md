@@ -13,15 +13,21 @@ This project implements and explores classification models in machine learning u
 
 ## 🚀 Features
 
+### Core Capabilities
 - **Data Preprocessing**: Handling missing values, encoding categorical variables, scaling, outlier removal
+- **Feature Engineering**: Polynomial features, interactions, binning, aggregations, selection, PCA
 - **9 Classification Models**: Random Forest, Logistic Regression, SVM, Gradient Boosting, and more
 - **Hyperparameter Tuning**: Grid Search and Random Search with cross-validation
 - **Model Evaluation**: Confusion matrices, ROC curves, precision-recall curves, 9+ metrics
 - **Model Persistence**: Save and load trained models
-- **Feature Importance**: Extract and visualize feature contributions
-- **Multi-Model Training**: Train and compare multiple models simultaneously
-- **Comprehensive Testing**: 113 tests with 81% code coverage
+- **Feature Selection**: K-best, Percentile, RFE methods
+- **Dimensionality Reduction**: PCA with variance analysis
+
+### Quality Assurance
+- **Comprehensive Testing**: 151 tests with 79% code coverage
 - **Production Ready**: Clean API, error handling, type hints
+- **Well Documented**: 7 comprehensive guides + API docs
+- **Best Practices**: SOLID principles, DRY code, modular design
 
 ## 📦 Installation
 
