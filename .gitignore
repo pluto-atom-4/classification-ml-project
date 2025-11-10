@@ -1,2 +1,4 @@
 .venv
+__temp_docs
 PyCharmMiscProject.iml
+/.coverage

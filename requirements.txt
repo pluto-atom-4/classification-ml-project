@@ -1,7 +1,24 @@
+# Core scientific computing
 numpy>=1.24
+pandas>=2.0
+scipy>=1.11
+
+# Machine learning
+scikit-learn>=1.3
+
+# Visualization
 matplotlib>=3.7
-pytest>=7.4
-scipy>=1.11      # For advanced linear algebra (e.g., SVD, LU decomposition)
-seaborn>=0.12    # For prettier matrix plots
-jupyterlab       # If you want to run it interactively in notebooks
+seaborn>=0.12
+
+# Jupyter notebooks
+jupyterlab
 ipywidgets
+
+# Testing
+pytest>=7.4
+pytest-cov>=4.1
+
+# Code quality
+black>=23.0
+flake8>=6.0
+mypy>=1.5

@@ -1,6 +1,6 @@
 # 🤖 Classification Models in Machine Learning
 
-This project implements and explores classification models in machine learning using Python, scikit-learn, and Jupyter Notebooks. It covers binary and multiclass classification with real-world datasets, following Microsoft Learn's machine learning training path.
+This project implements and explores classification models in machine learning using Python, scikit-learn, and Jupyter Notebooks. It covers binary and multiclass classification with real-world datasets, following [Microsoft Learn's machine learning training path](https://learn.microsoft.com/en-us/training/paths/understand-machine-learning/).
 
 ## 🎯 Learning Objectives
 
@@ -30,7 +30,7 @@ cd classification-ml-project
 pip install -r requirements.txt
 ```
 
-or use pyproject.toml
+Or use `pyproject.toml`:
 ```bash
 pip install -e .
 ```
@@ -39,38 +39,69 @@ pip install -e .
 
 The project uses the following datasets:
 
-- Diabetes Dataset: Binary classification of diabetes presence
-- Iris Dataset: Multiclass classification of iris species
-- Custom datasets: Add your own datasets in the `data/raw` folder
+- **Diabetes Dataset**: Binary classification (has diabetes / no diabetes)
+- **Iris Dataset**: Multiclass classification (3 flower species)
+- **Breast Cancer Dataset**: Binary classification (malignant / benign)
+- **Wine Dataset**: Multiclass classification (wine quality)
+- **Custom datasets**: Add your own in `data/raw/`
 
 ## 🧑‍💻 Usage
 
-Run Jupyter Notebooks
+### Run Jupyter Notebooks
 
 ```bash
 jupyter lab
 ```
-Navigate to notebooks/ and run:
-1. 01_data_exploration.ipynb - Explore and visualize datasets
-2. 02_binary_classification.ipynb - Build and evaluate binary models
-3. 03_multiclass_classification.ipynb - Implement multiclass models
-4. 04_model_evaluation.ipynb - compare and evaluate models
 
+Navigate to `notebooks/` and run:
+1. `01_data_exploration.ipynb` - Explore and visualize datasets
+2. `02_binary_classification.ipynb` - Build binary classifiers
+3. `03_multiclass_classification.ipynb` - Implement multiclass models
+4. `04_model_evaluation.ipynb` - Compare and evaluate models
 
-Use as Python Module
+### Use as Python Module
 
 ```python
-from src.models import BinaryClassifier
-from src.evaluation import evaluate_model
+from src.data_preprocessing import DataLoader, create_pipeline
 
-# Train a model
-clf = BinaryClassifier(model_type='logistic_regression')
-clf.fit(X_train, y_train)
+# Load a dataset
+loader = DataLoader()
+df = loader.load_sklearn_dataset('iris')
 
-# Evaluate
-metrics = evaluate_model(clf, X_test, y_test)
-print(metrics)
+# Complete preprocessing pipeline
+X_train, X_test, y_train, y_test, preprocessor = create_pipeline(
+    df,
+    target_column='target',
+    scale_features=True
+)
+
+# Now ready for model training!
 ```
+
+### Use Data Preprocessing Module
+
+```python
+from src.data_preprocessing import DataPreprocessor, split_data
+
+# Create preprocessor
+preprocessor = DataPreprocessor()
+
+# Handle missing values
+df_clean = preprocessor.handle_missing_values(df, strategy='mean')
+
+# Encode categorical variables
+df_encoded = preprocessor.encode_categorical(df_clean)
+
+# Scale features
+df_scaled = preprocessor.scale_features(df_encoded, method='standard')
+
+# Prepare features and target
+X, y = preprocessor.prepare_features_target(df_scaled, 'target')
+
+# Split data
+X_train, X_test, y_train, y_test = split_data(X, y, test_size=0.2)
+```
+
 ## 🧪 Testing
 
 Run the test suite:
@@ -85,18 +116,25 @@ With coverage report:
 pytest --cov=src tests/
 ```
 
-## 🔧 Pre-commit Hooks
+Run specific test file:
+
+```bash
+pytest tests/test_preprocessing.py -v
+```
+
+## 🔧 Pre-commit Hooks (Optional)
 
 Install pre-commit hooks for code quality:
 
 ```bash
 pre-commit install
 ```
-This runs Black, Flask8, and type checking on each commit.
+
+This runs Black, Flake8, and type checking before each commit.
 
 ## 📈 Key Concepts Covered
 
-- Classification vs. Regression
+- **Classification vs. Regression**
 - Training and test data splitting
 - Feature scaling and normalization
 - Overfitting and underfitting
