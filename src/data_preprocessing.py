@@ -14,17 +14,24 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder
 from sklearn.impute import SimpleImputer
 from sklearn.datasets import load_iris, load_breast_cancer, load_wine, load_diabetes
 
+# Get project root directory
+PROJECT_ROOT = Path(__file__).parent.parent
+
 
 class DataLoader:
     """Load datasets from various sources."""
 
-    def __init__(self, data_dir: str = "data"):
+    def __init__(self, data_dir: Optional[str] = None):
         """
         Initialize DataLoader.
 
         Args:
-            data_dir: Root directory for data files
+            data_dir: Root directory for data files. If None, defaults to
+                      [project_root]/data
         """
+        if data_dir is None:
+            data_dir = PROJECT_ROOT / "data"
+
         self.data_dir = Path(data_dir)
         self.raw_dir = self.data_dir / "raw"
         self.processed_dir = self.data_dir / "processed"
