@@ -1,3 +1,8 @@
+# Pyproject.toml for matrix-viz package
+# Ref.:
+# - https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html
+# - https://realpython.com/python-toml/
+#
 [build-system]
 requires = ["setuptools>=61.0", "wheel", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
