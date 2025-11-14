@@ -1,4 +1,36 @@
+# Virtual environments
 .venv
+venv/
+ENV/
+env/
+
+# Temporary documentation
 __temp_docs
+
+# IDE files
 PyCharmMiscProject.iml
+.idea/
+.vscode/
+
+# Testing and coverage
 /.coverage
+.coverage.*
+htmlcov/
+.pytest_cache/
+
+# Build and distribution
+*/*.egg-info
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Pre-commit
+.pre-commit-cache/
+

@@ -44,6 +44,37 @@ Or use `pyproject.toml`:
 pip install -e .
 ```
 
+---
+
+## 🛠️ Development setup
+
+Use a virtual environment to avoid polluting your global Python environment.
+
+1. Create and activate a virtual environment (Windows / bash):
+
+```bash
+python -m venv .venv
+source .venv/Scripts/activate  # on Windows (Git Bash / WSL), or
+# .venv\Scripts\activate.bat  # on Windows Command Prompt
+```
+
+2. Upgrade pip and install the project with optional dev tools:
+
+```bash
+python -m pip install --upgrade pip
+pip install -e .[dev,notebook]
+```
+
+This installs the package in editable mode plus the `dev` and `notebook` extras (testing, code-quality, and jupyter tools). If you only want the minimal runtime dependencies (including scikit-learn), run:
+
+```bash
+pip install -e .
+```
+
+Notes:
+- If you prefer using `requirements.txt`, you can run `pip install -r requirements.txt` instead.
+- To install only dev tools: `pip install -e .[dev]`.
+
 ## 📊 Datasets
 
 The project uses the following datasets:
