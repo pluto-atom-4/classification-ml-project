@@ -1,13 +1,37 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "matrix-viz"
-version = "0.1.0"
+version = "0.1.1"
 description = "Matrix operations and visualization with pytest"
 authors = [
     { name = "Akai Kaede", email = "it.scope@gmail.com" }
 ]
+# Pinned runtime dependencies
 dependencies = [
-    "numpy>=1.24",
-    "matplotlib>=3.7",
+    "numpy==1.24.0",
+    "pandas==2.0.0",
+    "scipy==1.11.0",
+    "scikit-learn==1.3.0",
+    "matplotlib==3.7.0",
+    "seaborn==0.12.0",
+]
+
+[project.optional-dependencies]
+# Developer / test tools
+dev = [
+    "pytest==7.4.0",
+    "pytest-cov==4.1.0",
+    "black==23.0.0",
+    "flake8==6.0.0",
+    "mypy==1.5.0",
+]
+# Jupyter / notebooks
+notebook = [
+    "jupyterlab==4.0.0",
+    "ipywidgets==8.0.0",
 ]
 
 [tool.black]
@@ -26,7 +50,3 @@ exclude = '''
 [tool.flake8]
 max-line-length = 88
 extend-ignore = ["E203", "W503", "E501"]
-
-[build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
