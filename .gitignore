@@ -34,3 +34,7 @@ __pycache__/
 # Pre-commit
 .pre-commit-cache/
 
+data/raw
+generated
+models
+
