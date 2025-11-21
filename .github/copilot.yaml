@@ -1,0 +1,80 @@
+# Project-local Copilot configuration for learning-ml-models
+# Purpose: document recommended venv commands, a Jupyter run command, and
+# where to place generated markdown outputs (generated/docs-copilot).
+# This variant is Git Bash–only: all commands and hooks assume Git Bash on Windows
+# (uses the POSIX-style activation script under .venv/Scripts/activate).
+# NOTE: This file is a project-local helper for humans and automation;
+# GitHub Copilot editor extensions may or may not automatically read/obey it.
+
+venv:
+  name: .venv
+  create:
+    bash: python -m venv .venv
+  activate:
+    # On Windows with Git Bash, the venv activation script lives under .venv/Scripts/activate
+    # Use forward slashes or Unix-style path inside Git Bash:
+    bash: source .venv/Scripts/activate
+
+pyproject:
+  # Instructions for installing the project and dev dependencies from pyproject.toml
+  # Two common flows are shown: using pip (PEP 517/518) or Poetry (if you use Poetry).
+  # Assumption: your project declares build-system and dependencies in pyproject.toml.
+  using: pip  # recommended default; change to 'poetry' if you use Poetry
+  pip:
+    # Install the project in editable mode (if supported) and install extras/dev extras
+    install: pip install -e .
+    install_dev: pip install -e ".[dev]"  # adjust extras name as needed
+    # Alternatively, a PEP 517 build-isolation install:
+    # install_pep517: pip install .
+  poetry:
+    # If you prefer Poetry, use these commands (uncomment/update `using` above)
+    install: poetry install
+    shell: poetry shell
+
+jupyter:
+  # Command suggested to run a Jupyter server for development.
+  # Adjust --NotebookApp.token or other flags if you need authentication.
+  run: jupyter lab --port 8888 --no-browser --NotebookApp.token=''
+  port: 8888
+
+output:
+  # Directory where Copilot-generated markdown files should be saved
+  directory: generated/docs-copilot
+  # Simple filename template; a consumer script/hook can expand the template.
+  filename_template: "{{YYYYMMDD}}-{{slug}}.md"
+
+hooks:
+  # Pre-hook ensures the output directory exists (bash / Git Bash)
+  pre:
+    - bash: mkdir -p generated/docs-copilot
+  # Post-hook example to move a known temporary output file into the target dir
+  # using the filename template. This is a Git Bash / POSIX example.
+  post:
+    - bash: |
+        # If a tool writes ./copilot_output.md, move it to the generated folder
+        if [ -f ./copilot_output.md ]; then
+          ts=$(date +%Y%m%d)
+          slug="copilot-output"
+          mv ./copilot_output.md generated/docs-copilot/${ts}-${slug}.md
+        fi
+
+# Assumptions / Notes:
+# - This yaml targets Git Bash only. PowerShell and CMD entries were intentionally removed.
+# - On Windows with Git Bash, the venv activation script is typically available at
+#   .venv/Scripts/activate (use `source .venv/Scripts/activate`). If you prefer
+#   to use a Unix-style .venv/bin layout, create the venv inside WSL or adjust accordingly.
+# - `pyproject` section assumes your project lists dependencies in pyproject.toml and
+#   declares a build backend. If you use Poetry, change `pyproject.using` to `poetry`.
+# - Adjust `pip install` extras (e.g. "[dev]") to match the extras defined in your project.
+
+# Example usage (Git Bash on Windows) — pip (recommended):
+#   python -m venv .venv
+#   source .venv/Scripts/activate
+#   pip install -e .
+#   pip install -e ".[dev]"
+#   jupyter lab --port 8888 --no-browser
+
+# Example usage (Git Bash + Poetry):
+#   poetry install
+#   poetry shell
+#   jupyter lab --port 8888 --no-browser
