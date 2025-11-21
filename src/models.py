@@ -24,6 +24,9 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import GridSearchCV, RandomizedSearchCV, cross_val_score
 from sklearn.base import BaseEstimator
 
+# Get project root directory
+PROJECT_ROOT = Path(__file__).parent.parent
+
 
 class BinaryClassifier:
     """Wrapper for binary classification models."""
@@ -403,26 +406,49 @@ def cross_validate_model(
     return {"mean_score": scores.mean(), "std_score": scores.std(), "scores": scores}
 
 
+def _resolve_model_path(filepath: Union[str, Path]) -> Path:
+    """
+    Resolve a model file path so that, by default, files are placed under
+    PROJECT_ROOT/models when a relative filename (no parent) is provided.
+    Absolute paths are returned unchanged. If the relative path starts with
+    'models', it is considered relative to PROJECT_ROOT as well.
+    """
+    filepath = Path(filepath)
+    if filepath.is_absolute():
+        return filepath
+    # Plain filename -> place under PROJECT_ROOT/models/
+    if filepath.parent == Path("."):
+        return PROJECT_ROOT / "models" / filepath.name
+    # Path starting with 'models' -> PROJECT_ROOT / given_path
+    if filepath.parts and filepath.parts[0] == "models":
+        return PROJECT_ROOT / filepath
+    # Other relative paths -> place under PROJECT_ROOT/<given_path>
+    return PROJECT_ROOT / filepath
+
+
 def save_model(model: Any, filepath: Union[str, Path]) -> None:
     """
-    Save a trained model to disk.
+    Save a trained model to disk under PROJECT_ROOT/models by default.
 
     Args:
         model: Trained model to save
-        filepath: Path to save the model
+        filepath: Path to save the model (absolute path is honored). If a plain
+                  filename is given, the file will be written to
+                  PROJECT_ROOT/models/<filename>.
     """
-    filepath = Path(filepath)
-    filepath.parent.mkdir(parents=True, exist_ok=True)
+    resolved = _resolve_model_path(filepath)
+    resolved.parent.mkdir(parents=True, exist_ok=True)
 
-    with open(filepath, "wb") as f:
+    with open(resolved, "wb") as f:
         pickle.dump(model, f)
 
-    print(f"Model saved to {filepath}")
+    print(f"Model saved to {resolved}")
 
 
 def load_model(filepath: Union[str, Path]) -> Any:
     """
-    Load a trained model from disk.
+    Load a trained model from disk. By default looks under PROJECT_ROOT/models
+    for relative filenames.
 
     Args:
         filepath: Path to the saved model
@@ -433,15 +459,15 @@ def load_model(filepath: Union[str, Path]) -> Any:
     Raises:
         FileNotFoundError: If file doesn't exist
     """
-    filepath = Path(filepath)
+    resolved = _resolve_model_path(filepath)
 
-    if not filepath.exists():
-        raise FileNotFoundError(f"Model file not found: {filepath}")
+    if not resolved.exists():
+        raise FileNotFoundError(f"Model file not found: {resolved}")
 
-    with open(filepath, "rb") as f:
+    with open(resolved, "rb") as f:
         model = pickle.load(f)
 
-    print(f"Model loaded from {filepath}")
+    print(f"Model loaded from {resolved}")
     return model
 
 
@@ -571,8 +597,9 @@ if __name__ == "__main__":
     print("Example 6: Save and Load Model")
     print("=" * 60)
 
-    save_model(model, "models/example_model.pkl")
-    loaded_model = load_model("models/example_model.pkl")
+    # Saving with a plain filename will place the file in PROJECT_ROOT/models/
+    save_model(model, "example_model.pkl")
+    loaded_model = load_model("example_model.pkl")
 
     # Verify loaded model works
     loaded_pred = loaded_model.predict(X_test[:5])
