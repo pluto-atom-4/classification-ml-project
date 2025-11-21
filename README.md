@@ -98,6 +98,7 @@ Navigate to `notebooks/` and run:
 2. `02_binary_classification.ipynb` - Build binary classifiers
 3. `03_multiclass_classification.ipynb` - Implement multiclass models
 4. `04_model_evaluation.ipynb` - Compare and evaluate models
+5. `05_retrain_wine_multiclass.ipynb` - Retrain a multiclass model on the Wine dataset and save the best model
 
 ### Complete Classification Workflow
 
